@@ -1,27 +1,29 @@
-<?php 
+<?php
 
-function insere (string $entidade, array $dados) : bool{
+function insere (string $entidade, array $dados) : bool
+{
     $retorno = false;
 
     foreach ($dados as $campo => $dado) {
         $coringa[$campo] = '?';
-        $tipo[] = gettype ($dado) [0];
+        $tipo[] = gettype($dado) [0];
         $$campo = $dado;
     }
 
-    $instrucao = insert ($entidade, $coringa);
+    $instrucao = insert($entidade, $coringa);
 
     $conexao = conecta();
 
-    $stmt = mysqli_prepare($conexao, $instrucao);
+    $stmt = mysqli_prepare ($conexao, $instrucao);
 
-    eval ('mysqli_stmt_bind_param($stmt, \'' .implode('', $tipo) . '\', $' . implode (', $', array_keys($dados)) . '); ');
+    eval('mysqli_stmt_bind_param($stmt, \'' . implode('',$tipo) . '\',$'
+    . implode(', $', array_keys($dados)) . '); ');
 
     mysqli_stmt_execute($stmt);
+    
+    $retorno = (boolean) mysqli_stmt_affected_rows($stmt);
 
-    $retorno = (boolean) myqli_stmt_affected_rows($stmt);
-
-    $_SESSION['error'] = mysqli_stmt_error_list($stmt);
+    $_SESSION['erros'] = mysqli_stmt_error_list($stmt);
 
     mysqli_stmt_close($stmt);
 
@@ -30,30 +32,30 @@ function insere (string $entidade, array $dados) : bool{
     return $retorno;
 }
 
-function atualiza (string $entidade, array $dados, array $criterio = []) : bool
+function atualiza(string $entidade, array $dados, array $criterio = []) : bool
 {
     $retorno = false;
 
-    foreache ($dados as $campo=> $dado) {
+    foreach ($dados as $campo => $dado) {
         $coringa_dados[$campo] = '?';
         $tipo[] = gettype($dado) [0];
         $$campo = $dado;
     }
 
     foreach ($criterio as $expressao) {
-        $dado = $expresssao[count($expressao) -1];
+        $dado = $expressao[count($expressao) -1];
 
-        $tipo[] = gettype($dado) [0];
-        $expresssao[count($expressao) -1];
-        coringa_criterio[] = $expressao;
+        $tipo[] = gettype($dado)[0];
+        $expressao[count($expressao) - 1] = '?';
+        $coringa_criterio[] = $expressao;
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
 
-        if(isset($nome_campo)) {
+        if(isset($nome_campo)){
             $nome_campo = $nome_campo . '_' . rand();
         }
 
-        $campos_criteiro[] = $nome_campo;
+        $campos_criterio[] = $nome_campo;
 
         $$nome_campo = $dado;
     }
