@@ -20,9 +20,9 @@
 
 <a class="nav-link" href="post formulario.php">Incluir Post</a>
 </li>
-<?php if ((isset(S SESSION['login']))
+<?php if ((isset($_SESSION['login']))
 
-&& (S SESSION['login'] ['usuario'] ['adm'] === 1)) : ?2>
+&& ($_SESSION['login'] ['usuario'] ['adm'] === 1)) : ?>
 
 <li class="nav-item">
 
