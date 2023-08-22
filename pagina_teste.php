@@ -34,6 +34,6 @@ include 'includes/rodape.php';
  </div>
 </div>
 
-<script src="1ib/bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+<script src="lib/bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
 </body>
 </html>
